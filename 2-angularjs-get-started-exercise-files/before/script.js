@@ -1,9 +1,13 @@
 // Code goes here
 
-var myApp = angular.module('myApp', []);
+var MainController = function($scope) {
+	$scope.message = "Hello!";
 
-myApp.controller("MainController", ["$scope",
-	function(s) {
-		s.message = "Hello, Angular!";
-	}
-]);
+	var person = {
+		firstName: "Jason",
+		lastName: "Dudley",
+		imageSrc: "https://angularjs.org/img/AngularJS-large.png"
+	};
+
+	$scope.person = person;
+};
