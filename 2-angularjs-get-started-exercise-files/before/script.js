@@ -1,13 +1,16 @@
 // Code goes here
 
-var MainController = function($scope) {
-	$scope.message = "Hello!";
-
-	var person = {
-		firstName: "Jason",
-		lastName: "Dudley",
-		imageSrc: "https://angularjs.org/img/AngularJS-large.png"
+var MainController = function($scope, $http) {
+	var onUserComplete = function(response) {
+		$scope.user = response.data;
 	};
 
-	$scope.person = person;
+	var onError = function(reason) {
+		$scope.error = "Could not fetch the user";
+	};
+
+	$http.get("https://api.github.com/users/robconery")
+		.then(onUserComplete, onError);
+
+	$scope.message = "TEST!";
 };

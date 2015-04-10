@@ -9,11 +9,12 @@
 
   <body ng-controller="MainController">
     <h1>{{message}}</h1>
+    {{error}}
     <div>
-    	<div>First: {{person.firstName}}</div>
-    	<div>Last:  {{person.lastName}}</div>
+      Name: {{user.name}} <br />
+      Location: {{user.location}}
     	<div>
-    		<img ng-src="{{person.imageSrc}}" title="{{person.firstName}} {{person.lastName}}">
+    		<img ng-src="{{user.avatar_url}}" title="{{user.name}}">
     	</div>
     </div>
   </body>
