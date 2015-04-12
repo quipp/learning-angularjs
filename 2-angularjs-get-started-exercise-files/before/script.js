@@ -1,22 +1,33 @@
 // Code goes here
 (function() {
 
-	var app = angular.module("githubViewer", []);
+    var app = angular.module("githubViewer", []);
 
-	var MainController = function($scope, $http) {
-		var onUserComplete = function(response) {
-			$scope.user = response.data;
-		};
+    var MainController = function($scope, $http) {
+        var onUserComplete = function(response) {
+            $scope.user = response.data;
+            $scope.error = "";
+            $http.get($scope.user.repos_url)
+                .then(onRepos, onError);
+        };
 
-		var onError = function(reason) {
-			$scope.error = "Could not fetch the user";
-		};
+        var onRepos = function(response) {
+            $scope.repos = response.data;
+        };
 
-		$http.get("https://api.github.com/users/robconery")
-			.then(onUserComplete, onError);
+        var onError = function(reason) {
+            $scope.error = "Could not fetch the data.";
+        };
 
-		$scope.message = "TEST!";
-	};
+        $scope.search = function(username) {
+            $http.get("https://api.github.com/users/" + username)
+                .then(onUserComplete, onError);
+        };
 
-	app.controller("MainController", ["$scope", "$http", MainController]);
+        $scope.username = "angular";
+        $scope.message = "GitHub Viewer";
+        $scope.repoSortOrder = '-stargazers_count';
+    };
+
+    app.controller("MainController", ["$scope", "$http", MainController]);
 }());
