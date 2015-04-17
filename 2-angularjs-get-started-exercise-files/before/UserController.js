@@ -1,7 +1,7 @@
 // Code goes here
 (function() {
 
-    var app = angular.module("githubViewer", []);
+    var app = angular.module("githubViewer");
 
     var MainController = function($scope, $http, $interval, $log, $anchorScroll, $location) {
         var onUserComplete = function(response) {
