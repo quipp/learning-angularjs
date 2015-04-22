@@ -1,54 +1,27 @@
-// Code goes here
 (function() {
 
     var app = angular.module("githubViewer");
 
-    var MainController = function($scope, $http, $interval, $log, $anchorScroll, $location) {
-        var onUserComplete = function(response) {
-            $scope.user = response.data;
+    var UserController = function($scope, github, $routeParams) {
+        var onUserComplete = function(data) {
+            $scope.user = data;
             $scope.error = "";
-            $http.get($scope.user.repos_url)
+            github.getRepos($scope.user)
                 .then(onRepos, onError);
         };
 
-        var onRepos = function(response) {
-            $scope.repos = response.data;
-            $location.hash("userDetails");
-            $anchorScroll();
+        var onRepos = function(data) {
+            $scope.repos = data;
         };
 
         var onError = function(reason) {
             $scope.error = "Could not fetch the data.";
         };
 
-        var decrementCountdown = function() {
-            $scope.countdown -= 1;
-            if ($scope.countdown < 1) {
-                $scope.search(($scope.username));
-            }
-        };
-
-        var countdownInterval = null;
-        var startCountdown = function() {
-            countdownInterval = $interval(decrementCountdown, 1000, $scope.countdown);
-        };
-
-        $scope.search = function(username) {
-            $log.info("Searching for " + username);
-            $http.get("https://api.github.com/users/" + username)
-                .then(onUserComplete, onError);
-            if (countdownInterval) {
-                $interval.cancel(countdownInterval);
-                $scope.countdown = null;
-            }
-        };
-
-        $scope.username = "angular";
-        $scope.message = "GitHub Viewer";
+        $scope.username = $routeParams.username;
         $scope.repoSortOrder = '-stargazers_count';
-        $scope.countdown = 5;
-        startCountdown();
+        github.getUser($scope.username).then(onUserComplete, onError);
     };
 
-    app.controller("MainController", ["$scope", "$http", "$interval", "$log", "$anchorScroll", "$location", MainController]);
+    app.controller("UserController", UserController);
 }());

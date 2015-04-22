@@ -1,4 +1,3 @@
-// Code goes here
 (function() {
 
     var app = angular.module("githubViewer");
@@ -22,13 +21,14 @@
                 $interval.cancel(countdownInterval);
                 $scope.countdown = null;
             }
-            // 
+            $location.path("/user/" + username);
         };
 
         $scope.username = "angular";
-        $scope.countdown = 5;
+        $scope.countdown = 15;
+
         startCountdown();
     };
 
-    app.controller("MainController", ["$scope", "$interval", "$location", MainController]);
+    app.controller("MainController", MainController);
 }());
